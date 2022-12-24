@@ -1,66 +1,82 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
+import { styles } from "../utils";
 import "./App.css";
-import { CodePen } from "./CodePen";
 
-export default class App extends React.Component {
-
-  constructor() {
-    super();
-  this.state = {
-    language: 'javascript',
-    style: "tomorrow",
-    showLineNumbers: false,
-    wrapLongLines: false
-  };
-}
-  render() {
-
+export default function App() {
 
   const supportedLanguages = SyntaxHighlighter.supportedLanguages;
+  const [language, setLanguage] = useState("javascript");
+  const [name, setName] = useState("HTML");
+  const [style, setStyle] = useState("a11y-dark");
+  const [script, setScript] = useState("console.log('hello world!')");
 
-    return (
-      <>
-      <textarea></textarea>
-      <div className="options__option options__option--language">
-              <select
-                className="select"
-                value={this.state.language}
-                onChange={e => this.setState({ language: e.target.value })}
-              >
-                {supportedLanguages.map(l => (
-                  <option key={l} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
+  useEffect(()=>{
+    console.log(style)
+  }
+  , [language,style])
+  return (
+    <div className="sudo-main">
+        <div className="sudo-content">
+       
+      <div className="section-one container">
+        <label htmlFor="script">Script</label>
+      <textarea className="form-control" value={script}   onChange={e => setScript(e.target.value)} name="script" id="script"></textarea>
+      <label htmlFor="title">Title</label>
+      <input className="form-control" name="title" placeholder="Title"></input>
+      <div className="w-full">
+      <label htmlFor="ln">Language</label>
+        <select
+          className="form-control"
+          value={language}
+          name="ln"
+          onChange={e => setLanguage(e.target.value)}
+        >
+          {supportedLanguages.map(l => (
+            <option key={l} value={l}>
+              {l}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="w-full">
+      <label htmlFor="ln">Theme</label>
+        <select
+          className="form-control"
+          value={style}
+          name="ln"
+          onChange={e => setStyle(e.target.value)}
+        >
+          {styles.map(l => (
+            <option key={l} value={l}>
+              {l}
+            </option>
+          ))}
+        </select>
+      </div>
+      </div>
+      <div className="container">
+        <div className="mac-terminal" >
+          <div className="header">
+            <div className="header__op">
+              <span className="header__op-icon header__op-icon--red"></span>
+              <span className="header__op-icon header__op-icon--yellow"></span>
+              <span className="header__op-icon header__op-icon--green"></span>
             </div>
-      <div class="container">
-      <div class="mac-terminal">
-        <div class="header">
-          <div class="header__op">
-            <span class="header__op-icon header__op-icon--red"></span>
-            <span class="header__op-icon header__op-icon--yellow"></span>
-            <span class="header__op-icon header__op-icon--green"></span>
+            <div className="header__title">{name}</div>
+            <div className="header__empty"></div>
           </div>
-          <div class="header__title">root@macbook:~/projects</div>
-          <div class="header__empty"></div>
-        </div>
-        <div class="body">
-          <div class="body__row">
-           <CodePen>
-            '<div>
-              <code>
-                Hi
-              </code>
-              </div>'
-           </CodePen>
+          <div className="body">
+            <div className="body__row">
+            <SyntaxHighlighter language={language} style={require(`react-syntax-highlighter/dist/esm/styles/hljs/${style}`).default}>
+            {script}
+            </SyntaxHighlighter>
+            </div>
+
           </div>
-                  
         </div>
       </div>
+      </div>
     </div>
-    </>
-    );
-  }
+  );
 }
