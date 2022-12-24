@@ -121,3 +121,8 @@
       border: 1px solid #bb6bd9;
       animation: flash 1s ease-in-out infinite;
    }
+
+
+.body__row pre{
+   background-color: unset !important
+}
